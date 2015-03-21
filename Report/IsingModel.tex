@@ -1,0 +1,221 @@
+\documentclass[12pt]{article}
+\usepackage{blindtext}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+
+
+
+\begin{document}
+
+\input{titlepage.tex}
+
+%Abstract on title page
+\tableofcontents{}
+\section{Introduction}
+\subsection{Ising Model}
+The Ising model is a lattice representation of magnetic dipole moments of atomic spins, $\sigma_i$.
+The hamiltonian,${\cal H}$  for a specific configuration of spins is given by;
+\begin{equation}\label{hamiltonian}
+{\cal H} = -J\sum_{<i,j>}\sigma_i \sigma_j - \mu H\sum_{i}\sigma_i
+\end{equation}
+Where $<i,j>$ denotes that the summation  is over pairs of neighboring spins. J is the interaction constant discussed below, while H is an external magnetic field and $\mu$ the magnetic moment.
+The value of the spins , which are confined to the lattice sites are restricted to be either up or down, i.e, $\sigma$ takes values of $\pm 1$.
+The system favors a state of minimum energy, hence the sign of J dictates the nature of the material such that $J>0$  indicates a \textbf{ ferromagnetic} material while for an \textbf {antiferromagnetic}, an anti-parallel alignment of spins is favored, hence $J <0$. \par The net alignment of unpaired electron spins of atoms in a material determine the nature of the material. For a paramagnetic material, in the presence of an applied external magnetic field, H, the spins align parallel to H, resulting in attraction. In a diamagnetic material, the net alignment of the unpaired spins is such that the net dipole moment opposes $H_{ext}$, resulting in repulsion.
+In a ferromagnet, ordering exists in regions known as domains which in the absence of $H_{ext}$ are randomly oriented in the material. In the presence of an external magnetic field, the domain boundaries are shifted such that domains parallel to $H_{ext}$ grow, while the rest shrink, resulting in a net magnetization; retained even in the absence of the external field. At a certain temperature known as the critical temperature, $T_c$, a ferromagnet goes through a second order phase transition\footnote{The second order derivatives of the free energy are discontinuous at $T_c$} due to thermal motions, such that the domains are randomly distributed and the material exhibits paramagnetic behavior.
+%\par The two dimensional Ising Model is a simple moed that fully describes the behavior of a ferrromagnet. Moreover, it is used to  
+\par The two dimensional Ising Model is among the simplest lattice models and  is used to study systems undergoing a phase transitions; it was initially formulated to show that a ferromagnet loses it's magnetization above a certain critical temperature, $T_c$. Here a phase transition is described for a system in thermal equilibrium that undergoes a change between an ordered state to a disordered state at $T_c$ which can be described by an order parameter\cite{Landau}. 
+In the case of a ferromagnet, the defined order parameter is the spontaneous magnetization, M;
+\begin{equation}\label{mag}
+M = M_o \epsilon^{\beta}
+\end{equation} 
+with $\epsilon = |1 - T/T_c|$ and $\beta$ the critical exponent. The order parameter is a property of the system which in non-zero in the ordered phase but identically zero in the ordered phase.
+
+While a one dimensional lattice Ising Model shows no phase transition, Onsager solved the two dimensional Ising model analytically using the transfer matrix method, in the absence of a magnetic field. In this study, we solve the Ising Model numerically using computational methods. we use computational methods to study the Ising Model.
+Ising Model brief introduction. (2 dimensional)
+Why do we use computational methods.
+Moreover the Ising Model has been used to study other problems such as phase separation in binary alloys and crystal growth.
+\subsection{Computational Methods}
+The Ising model is a canonical ensemble, with a partition function for a particular spin configuration x is given by;
+$$ {\cal Z} = \sum_x exp(-{\cal H}/(K_B T)) $$
+And the probability of the system to be in a certain state at a time t  is given by
+\begin{equation}\label{partition}
+P_x(t) = \frac{1}{Z} e^{-\frac{{\cal H}}{k_b T}}
+\end{equation}
+For a system with large N, few of the states are realized hence it is not efficient to sample states uniformly, rather we apply an importance sampling; importance sampling Monte Carlo methods, which involves repeated random sampling to obtain numerical results, where states are chosen that have a large weight in ${\cal z}$.
+
+
+\subsubsection{Periodic Boundary Conditions}
+Since the simulations are carried out on a finite lattice with boundaries, a way around this is to `eliminate' the boundaries by applying periodic boundary conditions. This is done such that the spins on the first row interact or `see' the spins of the last row, and the same with the columns of the lattice such that the 2d lattice is folded into a 3d torus; this is shown in figure ~\ref{pbc}.
+
+\begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{pbc.png}
+                \caption{Periodic boundary conditions}
+                \label{pbc}
+        \end{subfigure}
+         %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{torus.png}
+                \caption{3d torus is representative of periodic boundary conditions on 2d lattice model}
+                \label{torus}
+        \end{subfigure}
+\end{figure}
+
+The results of this configuration differ from those of an infinite lattice since the correlation length is limited to L/2 \cite{Landau}
+
+
+\subsection{Finite size scaling}
+The finite size of the lattice limits the determination of a second order phase transition(point of divergence).While the use of periodic boundary conditions minimizes this effect, the problem is resolved by extrapolating the theoretical value given the limited resource of a finite attice\cite{Kotze}. We define the critical exponents of the Ising Model showing their dependence on lattice size;
+\begin{eqnarray}
+M = \\
+23 \\
+
+\end{eqnarray}
+%Divergence of hte critical length.
+Thus by plotting ln-ln graphs, the critical exponents (with the exception of $\alpha$) can be obtained from the slopes
+Finally, the fourth order cumulant \cite{Ising}  is used to determine $T_c$ defined by equation ~\ref{cumulant}
+\begin{equation}\label{cumulant}
+U_4 = 1 - \frac{<m^4>}{3<m^2>^2}
+\end{equation}
+\subsection{Metropolis Algorithm}
+
+The probability of the system being in state n at time t is given by;
+$$ \frac{\partial P_n(t)}{\partial t} = -\sum_{n \neq m}\left[ P_n(t)W_{n\to m} - P_m(t)W_{m\to n} \right]$$
+Where $W_{n\to m} $ is the transition rate for $n\to m$.The probability of the nth state is given by equation ~\ref{partition}.The value of the denominator, Z is not known and hence A Markov chain\footnote{Markov chain} of states is generated, such that the denomenator cancels out and the transition rate depends only on the energy difference, $\Delta E$ between the two states;
+%\begin{equation}
+%W_{n \to m} = \begin{array}{l l}\tau^-1 e^{(-\Delta E/k_bT)} & \qaud \Delta E >0 \\
+%                         \tau^-1 &\quad \Delta E<0 \end{array}
+%\end{equation}
+
+\[ W_{n \to m} = \left\{ 
+  \begin{array}{l l}
+    \tau^-1 e^{(-\Delta E/k_bT)} & \quad \Delta E >0\\
+    \tau^-1 & \quad \Delta E<0
+  \end{array} \right.\]
+$\tau^-1$ is the time taken for a spin flip and is set to one.
+The metropolis algorithm can be summarized as;
+\begin{enumerate}
+\item{ The lattice is initialized with a random spin configuration\footnote{A random configuration has the benefit of using less computing time compared to a homogeneous configuration} $s= (s_1, s_2, \cdots s_N)$ and temperature T}
+\item{For each Monte Carlo\footnote{Every lattice in the system is considered once} sweep performed through the lattice; }
+\begin{enumerate}
+\item{The change in energy$\Delta E$ is calculated resulting from a new configuration $s' =(s_1, s_2, \cdots s_i \cdots s_N)$ generated by flipping the spin at lattice site i.}
+\item{If $\Delta E <0$, then the spin flip is accepted\\
+else; a random number r is generated such that $0<r<1$ and  the new configuration, s' is accepted if $r<exp(-\Delta E/k_B T)$.}
+\end{enumerate}
+\item{The required observables Magnetization, M, specific heat, $C_v$, and energy E are stored.}
+\end{enumerate}
+Since we want to observe a phase transition, the algorithm is implemented within a temperature loop; for each temperature step, the average magnetization$<M>$, specific heat C and susceptibilty $\chi$ defined below were stored.
+Results depend on temperature, lattice size. The observables used are defined as;
+
+$$ <M> =\frac{1}{N} \sum_{j=1}^N s_i \quad \quad C = \frac{\partial E}{\partial T}=\frac{<E^2>- <E>^2}{k_bT^2}\quad\quad \chi = \frac{\partial M}{\partial T}=\frac{<M^2>-<M>^2}{k_bT}  $$
+
+QUESTION: HOW DO WE ACTUALLY DETERMINE THE CRITICAL TEMPERATURE??
+EQUILIBRATION
+Since initial conditions are random, it may take a while for the  system to equilibrate; for this reason, the averages are only calculated and 
+
+\subsection{Heat Bath}
+The heat bath algorithm is a modified metropolis and is most applicable in cases where the Metropolis algorithm has a low acceptance rate such as in lattice gauge models.
+A spin flip $-s_i$ at lattice site i is determined by considering all it's possible states in the heat bath of it's neighbors, which are considered fixed. The transition probability is given by;
+\begin{equation}
+W_{n\to m} = \frac{\exp\left(-\beta k_bT s_i'h_0\right)}{\exp\left(\beta k_bT  h_o\right) + \exp\left(-\beta k_bT h_0\right)   } = \frac{\exp\left(-\beta \Delta E\right)}{\exp\left(-\beta\Delta E  \right)+1}
+\end{equation}
+With $\beta = \frac{1}{k_bT}$ and $h_o = \sum_{j \in <i,j>} s_j$, $\Delta E = (s_i' - s_i)h_0$
+WHAT IS THE ACTUAL ALGORITHM?\\
+ In this case the acceptance for a trial spin configuration, \textbf {s}'is not determined by $\Delta E$ but is accepted if for a given random number, r;
+$$ r< exp\left(-E'/k_B T\right) $$
+Where E' is the energy of the trial state.
+The difference in the two algorithms is seen when $\Delta E = 0$; in the metropolis algorithm, the spin flip is always accepted, while in the heat bath method, the flip is only accepted half or the time. A comparison in the efficiencies of the tow methods is done in this study.
+Spin configuration is generated from a previous state using a transition probability depending on the the energy difference, $\Delta E$ between the final and initial states.
+
+\subsection{Wolff Algorithm}
+This algorithm involves flipping a cluster of spins rather than a single spin of the lattice; known as a cluster algorithm.
+Reason for this is that Critical slowing down is observed close to $T_c$  attributed to large spatial correlations \cite{Leipzig}. A solution to this is to apply non-local/collective updates to the system, hence the use of clusters.
+ A cluster is formed by selecting an initial site and  creating bonds between pairs of spins in the same state with probability,
+ \begin{equation}\label{Wolff}
+ p = 1 - e^{-K\delta_{s_is_j}}
+ \end{equation}
+ With $K = J/k_bT$.
+ Th
+ This process is continued until no new bonds are created and the entire cluster of similar spins is then flipped. Another site is selected and the process repeated.
+Another initial is site is selected and the process repeated. 
+%The difference between the Wolff algorithm compared to the Swendson-Wang is a type  of cluster algorithm where that involves multiple cluster updates in one sweep. But small clusters do not contribute to the critical slowing down, hence this method is not efficient.
+The probability in equation ~\ref{Wolff} is derived from the q-state Potts model \cite{Landau} with partition function $ Z  = \sum_{s_i} e^{-K\sum_{i,j}\delta s_is_j -1} $ and the sum is over all states of $s_i = 1,2,.....,q.$
+In this model, a bond is formed between nearest neighbors only if they are in the same state.
+
+\subsection{Finite size scaling results}
+\section{Results}
+
+\subsection{Comparison to Onsager's Results}
+
+
+\section{Theoretical Background}
+Magnetism(ferro, para), 
+Critical Temp..
+Heat capacity, Magnetisation, Susceptibilty - Critical exponents.
+Onsager's solution.
+\section{Computational methods}
+Monte Carlo 
+Boundary conditions
+Metropolis and Heat Bath
+Wolf Algorithm
+Finite size scaling (since finite lattice does not exhibit phase transitions.)
+
+
+\section{Results}
+Comparison of lattice size (with both heat bath and metropolis). Mention Tc, critical exponents etc.
+Onsager's results(with both heat bath and metropolis)
+Finite size scaling
+Wolf algorithm?
+Cluster algorithm?
+N dimensions?
+
+
+\section{Conclusion}
+
+\begin{thebibliography}{}
+\bibitem{Landau}
+David P. Landau and Kurt Binder
+\emph{A guide to Monte Carlo Simulations in Statistical Physics}
+
+\bibitem{Kotze}
+Jacques Kotze
+\emph{Introduction to Monte Carlo methods for an Ising Model of a Ferromagnet}
+
+\bibitem{Leipzig}
+Wolfhard Janke
+\emph{Monte Carlo Methods in Classical Statistical Physics}
+Institut fur Theoretische Physik and Centre for Theoretical Sciences, Universitaet Leipzig
+
+\end{thebibliography}{}
+
+\bibliography{}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
