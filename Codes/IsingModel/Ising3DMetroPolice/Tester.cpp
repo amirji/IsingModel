@@ -200,18 +200,6 @@ int main (){
 		}
 
 
-			// AveE = AveE/(NStep-NEqu);
-			// AveE2 = AveE2/(NStep-NEqu);
-			// AveMag = AveMag/((NStep-NEqu));
-			// AveMag2 = AveMag2/((NStep-NEqu));
-
-			// Cv = (AveE2 - pow(AveE,2))/(T*T);
-			// Xi = (AveMag2 - AveMag*AveMag)/(T);
-			// file<<AveE<<"	"<<T<<"\n";
-			// file2<<AveMag/N<<"	"<<T<<"\n";
-			// file3<<Cv<<"	"<<T<<"\n";
-			// file4<<Xi<<"	"<<T<<"\n";
-
 			AveE = AveE/(NStep-NEqu);
 			AveE2 = AveE2/(NStep-NEqu);
 			AveMag = AveMag/((NStep-NEqu));

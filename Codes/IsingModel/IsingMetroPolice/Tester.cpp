@@ -12,8 +12,8 @@ using namespace std;
 #define NX 10
 #define NY 10
 #define N NX*NY
-#define NStep 3000000
-#define NEqu 2000000
+#define NStep 300000
+#define NEqu 200000
 
 // #define KB 1.38E-23 
 
@@ -109,6 +109,9 @@ int main (){
 	// }
 		
 		counter = 0;
+		BCounter = 1;
+		BlockSize = (NStep - NEqu) / BlockCount;			  	
+	 	
 	 	for ( int iNStep = 1; iNStep <= NStep; iNStep++ ){
 	 		counter = counter + 1; 
 			int i = rand() % NX+1;
@@ -173,22 +176,31 @@ int main (){
 				AveMag = AveMag + magnetization;
 				AveMagAbs = AveMagAbs + abs(magnetization);
 				AveMag2 = AveMag2 + magnetization*magnetization;
+			 	
+			 	ErEnergyTemp = ErEnergyTemp + AveE;
+			 	ErMagnetizationTemp = ErMagnetizationTemp + magnetization;			 	
+			 	‌BCounter = BCounter + 1;
+			 	if (BCounter == ‌BlockSize) {
+			 		ErrorEnergy[BlockNumber] = ErEnergyTemp / BlockSize;
+			 		ErrorMagnetization[BlockNumber] = ErMagnetizationTemp / BlockSize;			 		
+			 		BlockNumber = BlockNumber + 1 ;
+			 		BCounter = 1;
+			 	}
+
+							
 			}
-		
+
 		}
 
 
-			// AveE = AveE/(NStep-NEqu);
-			// AveE2 = AveE2/(NStep-NEqu);
-			// AveMag = AveMag/((NStep-NEqu));
-			// AveMag2 = AveMag2/((NStep-NEqu));
+			for ( iError = 1; iError <= BlockCount; iError++ ){
+				AveErrorEnergy = AveErrorEnergy + ErrorEnergy[iError];
+				AveErrorMagnetization = AveErrorMagnetization + ErrorMagnetization[iError];
+			}
 
-			// Cv = (AveE2 - pow(AveE,2))/(T*T);
-			// Xi = (AveMag2 - AveMag*AveMag)/(T);
-			// file<<AveE<<"	"<<T<<"\n";
-			// file2<<AveMag/N<<"	"<<T<<"\n";
-			// file3<<Cv<<"	"<<T<<"\n";
-			// file4<<Xi<<"	"<<T<<"\n";
+			AveErrorMagnetization = AveErrorMagnetization/BlockNumber;
+			AveErrorEnergy = AveErrorEnergy / BlockNumber;
+
 
 			AveE = AveE/(NStep-NEqu);
 			AveE2 = AveE2/(NStep-NEqu);
