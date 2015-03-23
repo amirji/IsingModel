@@ -30,6 +30,11 @@ double TrialSpin;
 double DeltaU;
 double KB = 1;
 
+int BlockNumber, BlockSize, BlockCount, iError, BCounter;
+double AveErrorMagnetization, AveErrorEnergy, ErrorEnergy[BlockCount], ErrorMagnetization[BlockCount];
+double ErEnergyTemp, ErMagnetizationTemp;
+
+
 int DetermineSpins(){
 	if ( ((double)rand() / (double)RAND_MAX) < 0.5) {
 		return -1;
@@ -178,7 +183,11 @@ int main (){
 				AveMag2 = AveMag2 + magnetization*magnetization;
 			 	
 			 	ErEnergyTemp = ErEnergyTemp + AveE;
-			 	ErMagnetizationTemp = ErMagnetizationTemp + magnetization;			 	
+			 	ErMagnetizationTemp = ErMagnetizationTemp + magnetization;	
+			 	//Bcounter is just a counter here for using in for loop
+			 	//BlockSize is the size of a block
+			 	//BlockNumber is the NO. of the block 	
+			 	//‌BlockCount is the total number of blocks	 	
 			 	‌BCounter = BCounter + 1;
 			 	if (BCounter == ‌BlockSize) {
 			 		ErrorEnergy[BlockNumber] = ErEnergyTemp / BlockSize;
@@ -210,8 +219,8 @@ int main (){
 
 			Cv = N*(AveE2 - pow(AveE,2))/(T*T);
 			Xi = (AveMag2 - AveMagAbs*AveMagAbs)/(N*T);
-			file<<AveE<<"	"<<T<<"\n";
-			file2<<AveMag/(N)<<"	"<<T<<"\n";
+			file<<AveE<<"	"<<T<<"	"<<AveErrorEnergy<<"\n";
+			file2<<AveMag/(N)<<"	"<<T<<"	"<<AveErrorMagnetization<<"\n";
 			file3<<Cv<<"	"<<T<<"\n";
 			file4<<Xi<<"	"<<T<<"\n";
 	
