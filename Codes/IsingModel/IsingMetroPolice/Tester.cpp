@@ -116,7 +116,8 @@ int main (){
 		counter = 0;
 		BCounter = 1;
 		BlockSize = (NStep - NEqu) / BlockCount;	
-		BlockSize = 1000;		  	
+		BlockNumber = 0;
+		// BlockSize = 1000;		  	
 	 	
 	 	for ( int iNStep = 1; iNStep <= NStep; iNStep++ ){
 	 		counter = counter + 1; 
