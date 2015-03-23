@@ -14,7 +14,7 @@ using namespace std;
 #define N NX*NY
 #define NStep 300000
 #define NEqu 200000
-
+#define BlockCount 100
 // #define KB 1.38E-23 
 
 double spins[NX+2][NY+2];
@@ -30,7 +30,7 @@ double TrialSpin;
 double DeltaU;
 double KB = 1;
 
-int BlockNumber, BlockSize, BlockCount, iError, BCounter;
+int BlockNumber, BlockSize,iError, BCounter;
 double AveErrorMagnetization, AveErrorEnergy, ErrorEnergy[BlockCount], ErrorMagnetization[BlockCount];
 double ErEnergyTemp, ErMagnetizationTemp;
 
@@ -115,7 +115,8 @@ int main (){
 		
 		counter = 0;
 		BCounter = 1;
-		BlockSize = (NStep - NEqu) / BlockCount;			  	
+		BlockSize = (NStep - NEqu) / BlockCount;	
+		BlockSize = 1000;		  	
 	 	
 	 	for ( int iNStep = 1; iNStep <= NStep; iNStep++ ){
 	 		counter = counter + 1; 
@@ -188,12 +189,15 @@ int main (){
 			 	//BlockSize is the size of a block
 			 	//BlockNumber is the NO. of the block 	
 			 	//‌BlockCount is the total number of blocks	 	
-			 	‌BCounter = BCounter + 1;
-			 	if (BCounter == ‌BlockSize) {
-			 		ErrorEnergy[BlockNumber] = ErEnergyTemp / BlockSize;
-			 		ErrorMagnetization[BlockNumber] = ErMagnetizationTemp / BlockSize;			 		
+			 	// ‌BCounter = BCounter + 1;
+			 	BCounter++;
+			 
+			 	if (BCounter == BlockSize) {
+			 		ErrorEnergy[BlockNumber] = ErEnergyTemp/BlockSize;
+			 		ErrorMagnetization[BlockNumber] = ErMagnetizationTemp/BlockSize;			 		
 			 		BlockNumber = BlockNumber + 1 ;
 			 		BCounter = 1;
+
 			 	}
 
 							
