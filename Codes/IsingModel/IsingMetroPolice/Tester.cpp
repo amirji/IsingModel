@@ -1,3 +1,7 @@
+
+//Dear future me. Please forgive me.
+//When I wrote This code, only I and God knew what this shit was. Know only God Knows.
+
 #include <iostream>
 #include <cstdlib>
 #include <stdio.h>
@@ -212,9 +216,16 @@ int main (){
 				AveErrorMagnetization = AveErrorMagnetization + ErrorMagnetization[iError];
 			}
 
-			AveErrorMagnetization = AveErrorMagnetization/BlockNumber;
-			AveErrorEnergy = AveErrorEnergy / BlockNumber;
+			AveErrorMagnetization = AveErrorMagnetization/BlockCount;
+			AveErrorEnergy = AveErrorEnergy / BlockCount;
+			double sumErEn = 0;
+			double sumErMa = 0;
 
+			for ( int zBlock = 1; zBlock <= BlockCount; zBlock++){
+				sumErEn = sumeErEn + ErrorMagnetization[zBlock] - AveErrorMagnetization;
+				sumErMa = sumErMa + ErrorEnergy[zBlock] - AveErrorEnergy;
+			}	
+			1.0/((BlockCount)*(BlockCount-1))
 
 			AveE = AveE/(NStep-NEqu);
 			AveE2 = AveE2/(NStep-NEqu);
