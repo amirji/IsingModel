@@ -20,6 +20,9 @@
 *.out
 *.ppt 
 *.dat
+*.aux
+*.tex
+*.sty
 
 # Packages #
 ############
