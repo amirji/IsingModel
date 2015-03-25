@@ -13,8 +13,8 @@
 
 using namespace std;
 
-#define NX 10
-#define NY 10
+#define NX 16
+#define NY 16
 #define N NX*NY
 #define NStep 300000
 #define NEqu 200000
@@ -228,10 +228,10 @@ int main (){
 				sumErEn = sumErEn + pow((ErrorMagnetization[zBlock] - AveErrorMagnetization),2);
 				sumErMa = sumErMa + pow((ErrorEnergy[zBlock] - AveErrorEnergy),2);
 			}	
-			SigmaErMa = 1.0/((BlockCount)*(BlockCount-1))*sumErMa;
+			SigmaErMa = sumErMa/((BlockCount)*(BlockCount-1));
 			SigmaErMa = sqrt(SigmaErMa);
 			
-			SigmaErEn = 1.0/((BlockCount)*(BlockCount-1))*sumErEn;
+			SigmaErEn = sumErEn/((BlockCount)*(BlockCount-1));
 			SigmaErEn = sqrt(SigmaErEn);
 
 			AveE = AveE/(NStep-NEqu);
@@ -243,7 +243,7 @@ int main (){
 			Xi = (AveMag2 - AveMagAbs*AveMagAbs)/(N*T);
 			
 			file<<AveE<<"	"<<T<<"	"<<SigmaErEn<<"\n";
-			file2<<AveMag/(N)<<"	"<<T<<"	"<<SigmaErMa<"\n";
+			file2<<AveMag/(N)<<"	"<<T<<"	"<<SigmaErMa<<"\n";
 			file3<<Cv<<"	"<<T<<"\n";
 			file4<<Xi<<"	"<<T<<"\n";
 	
