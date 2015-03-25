@@ -188,8 +188,8 @@ int main (){
 				AveMagAbs = AveMagAbs + abs(magnetization);
 				AveMag2 = AveMag2 + magnetization*magnetization;
 			 	
-			 	ErEnergyTemp = ErEnergyTemp + AveE;
-			 	ErMagnetizationTemp = ErMagnetizationTemp + magnetization;	
+			 	ErEnergyTemp = ErEnergyTemp + AveE/(NStep-NEqu);
+			 	ErMagnetizationTemp = ErMagnetizationTemp + AveMag/(NStep-NEqu);	
 			 	//Bcounter is just a counter here for using in for loop
 			 	//BlockSize is the size of a block
 			 	//BlockNumber is the NO. of the block 	
@@ -202,6 +202,8 @@ int main (){
 			 		ErrorMagnetization[BlockNumber] = ErMagnetizationTemp/BlockSize;			 		
 			 		BlockNumber = BlockNumber + 1 ;
 			 		BCounter = 1;
+			 		ErMagnetizationTemp = 0;
+			 		ErEnergyTemp = 0;
 
 			 	}
 
@@ -220,27 +222,37 @@ int main (){
 			AveErrorEnergy = AveErrorEnergy / BlockCount;
 			double sumErEn = 0;
 			double sumErMa = 0;
-
+			double SigmaErMa = 0;
+			double SigmaErEn = 0;
 			for ( int zBlock = 1; zBlock <= BlockCount; zBlock++){
-				sumErEn = sumeErEn + ErrorMagnetization[zBlock] - AveErrorMagnetization;
-				sumErMa = sumErMa + ErrorEnergy[zBlock] - AveErrorEnergy;
+				sumErEn = sumErEn + pow((ErrorMagnetization[zBlock] - AveErrorMagnetization),2);
+				sumErMa = sumErMa + pow((ErrorEnergy[zBlock] - AveErrorEnergy),2);
 			}	
-			1.0/((BlockCount)*(BlockCount-1))
+			SigmaErMa = 1.0/((BlockCount)*(BlockCount-1))*sumErMa;
+			SigmaErMa = sqrt(SigmaErMa);
+			
+			SigmaErEn = 1.0/((BlockCount)*(BlockCount-1))*sumErEn;
+			SigmaErEn = sqrt(SigmaErEn);
 
 			AveE = AveE/(NStep-NEqu);
 			AveE2 = AveE2/(NStep-NEqu);
 			AveMag = AveMag/((NStep-NEqu));
 			AveMag2 = AveMag2/((NStep-NEqu));
 			AveMagAbs = AveMagAbs/((NStep-NEqu));
-
 			Cv = N*(AveE2 - pow(AveE,2))/(T*T);
 			Xi = (AveMag2 - AveMagAbs*AveMagAbs)/(N*T);
-			file<<AveE<<"	"<<T<<"	"<<AveErrorEnergy<<"\n";
-			file2<<AveMag/(N)<<"	"<<T<<"	"<<AveErrorMagnetization<<"\n";
+			
+			file<<AveE<<"	"<<T<<"	"<<SigmaErEn<<"\n";
+			file2<<AveMag/(N)<<"	"<<T<<"	"<<SigmaErMa<"\n";
 			file3<<Cv<<"	"<<T<<"\n";
 			file4<<Xi<<"	"<<T<<"\n";
 	
+			AveErrorMagnetization = 0.0;
+			AveErrorEnergy = 0.0;
 	}
+			// ErrorMagnetization[] = 0.0;
+			// ErrorEnergy[] = S0.0;
+
 
 		// 	for (x = 1; x <= NX; x++) {
 		// 	for (y = 1; y <= NY; y++ ){
