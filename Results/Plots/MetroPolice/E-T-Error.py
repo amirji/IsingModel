@@ -1,10 +1,10 @@
-from pylab import plot,show,ylim, xlabel,ylabel,title,axis,legend
+from pylab import plot,show,ylim, xlabel,ylabel,title,axis,legend, errorbar
 from numpy import loadtxt, linspace
 
 title('Metropolice: Energy per spin (E/N) vs Temperature (T)')
 
 
-data =	loadtxt("IsingMetroPolice/../../../E-T.dat",float)
+data =	loadtxt("5*5/E-T.dat",float)
 
 # x = linspace(0,10,100)
 plot(data[:,1],data[:,0],"cs", label="L = 100")

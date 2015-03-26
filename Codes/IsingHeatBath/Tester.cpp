@@ -160,10 +160,71 @@ int main (){
 				AveMag = AveMag + magnetization;
 				AveMagAbs = AveMagAbs + abs(magnetization);
 				AveMag2 = AveMag2 + magnetization*magnetization;
+
+			 	ErEnergyTemp = ErEnergyTemp + AveE/(NStep-NEqu);
+			 	ErMagnetizationTemp = ErMagnetizationTemp + AveMag/(NStep-NEqu);	
+			 	//Bcounter is just a counter here for using in for loop
+			 	//BlockSize is the size of a block
+			 	//BlockNumber is the NO. of the block 	
+			 	//‌BlockCount is the total number of blocks	 	
+			 	// ‌BCounter = BCounter + 1;
+			 	BCounter++;
+			 
+			 	if (BCounter == BlockSize) {
+			 		ErrorEnergy[BlockNumber] = ErEnergyTemp/BlockSize;
+			 		ErrorMagnetization[BlockNumber] = ErMagnetizationTemp/BlockSize;			 		
+			 		BlockNumber = BlockNumber + 1 ;
+			 		BCounter = 1;
+			 		ErMagnetizationTemp = 0;
+			 		ErEnergyTemp = 0;
+
+			 	}
+
+
+
+
+				
 			}
 		
 		}
 
+
+	for ( iError = 1; iError <= BlockCount; iError++ ){
+				AveErrorEnergy = AveErrorEnergy + ErrorEnergy[iError];
+				AveErrorMagnetization = AveErrorMagnetization + ErrorMagnetization[iError];
+			}
+
+			AveErrorMagnetization = AveErrorMagnetization/BlockCount;
+			AveErrorEnergy = AveErrorEnergy / BlockCount;
+			double sumErEn = 0;
+			double sumErMa = 0;
+			double SigmaErMa = 0;
+			double SigmaErEn = 0;
+			for ( int zBlock = 1; zBlock <= BlockCount; zBlock++){
+				sumErEn = sumErEn + pow((ErrorMagnetization[zBlock] - AveErrorMagnetization),2);
+				sumErMa = sumErMa + pow((ErrorEnergy[zBlock] - AveErrorEnergy),2);
+			}	
+			SigmaErMa = sumErMa/((BlockCount)*(BlockCount-1));
+			SigmaErMa = sqrt(SigmaErMa);
+			
+			SigmaErEn = sumErEn/((BlockCount)*(BlockCount-1));
+			SigmaErEn = sqrt(SigmaErEn);
+
+			AveE = AveE/(NStep-NEqu);
+			AveE2 = AveE2/(NStep-NEqu);
+			AveMag = AveMag/((NStep-NEqu));
+			AveMag2 = AveMag2/((NStep-NEqu));
+			AveMagAbs = AveMagAbs/((NStep-NEqu));
+			Cv = N*(AveE2 - pow(AveE,2))/(T*T);
+			Xi = (AveMag2 - AveMagAbs*AveMagAbs)/(N*T);
+			
+			file<<AveE<<"	"<<T<<"	"<<SigmaErEn<<"\n";
+			file2<<AveMag/(N)<<"	"<<T<<"	"<<SigmaErMa<<"\n";
+			file3<<Cv<<"	"<<T<<"\n";
+			file4<<Xi<<"	"<<T<<"\n";
+	
+			AveErrorMagnetization = 0.0;
+			AveErrorEnergy = 0.0;
 
 			AveE = AveE/(NStep-NEqu);
 			AveE2 = AveE2/(NStep-NEqu);
