@@ -31,6 +31,11 @@ double DeltaU;
 double KB = 1;
 double Eplus, Eminus, beta;
 
+int BlockNumber, BlockSize,iError, BCounter;
+double AveErrorMagnetization, AveErrorEnergy, ErrorEnergy[BlockCount], ErrorMagnetization[BlockCount];
+double ErEnergyTemp, ErMagnetizationTemp;
+
+
 int DetermineSpins(){
 	if ( ((double)rand() / (double)RAND_MAX) < 0.5) {
 		return -1;
@@ -102,6 +107,11 @@ int main (){
 		}
 		
 		counter = 0;
+		BCounter = 1;
+		BlockSize = (NStep - NEqu) / BlockCount;	
+		BlockNumber = 0;
+		// BlockSize = 1000;		  	
+	 	
 	 	for ( int iNStep = 1; iNStep <= NStep; iNStep++ ){
 	 		counter = counter + 1; 
 			int i = rand() % NX+1;
@@ -234,8 +244,9 @@ int main (){
 
 			Cv = N*(AveE2 - pow(AveE,2))/(T*T);
 			Xi = (AveMag2 - AveMagAbs*AveMagAbs)/(N*T);
-			file<<AveE<<"	"<<T<<"\n";
-			file2<<AveMag/(N)<<"	"<<T<<"\n";
+
+			file<<AveE<<"	"<<T<<"	"<<SigmaErEn<<"\n";
+			file2<<AveMag/(N)<<"	"<<T<<"	"<<SigmaErMa<<"\n";
 			file3<<Cv<<"	"<<T<<"\n";
 			file4<<Xi<<"	"<<T<<"\n";
 	
