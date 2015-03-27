@@ -14,7 +14,7 @@ using namespace std;
 #define N NX*NY
 #define NStep 3000000
 #define NEqu 2000000
-
+#define BlockCount 100
 // #define KB 1.38E-23 
 
 double spins[NX+2][NY+2];
